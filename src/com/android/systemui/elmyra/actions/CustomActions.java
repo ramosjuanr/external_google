@@ -79,12 +79,7 @@ public class CustomActions extends Action {
                     Utils.toggleNotifications();
                 }
                 break;
-            case 9: // Screenshot
-                if (isScreenOn) {
-                    Utils.takeScreenshot(true);
-                }
-                break;
-            case 10: // QS panel
+            case 9: // QS panel
                 if (isScreenOn) {
                     Utils.toggleQsPanel();
                 }
