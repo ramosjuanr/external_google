@@ -18,14 +18,12 @@ import com.google.android.systemui.elmyra.sensors.GestureSensor.DetectionPropert
 public class CustomActions extends Action {
 
     private AssistManager mAssistManager;
-    private PowerManager mPm;
-    private ContentResolver mResolver;
+    private PowerManager pm;
 
     public CustomActions(Context context) {
         super(context, null);
-        mResolver = context.getContentResolver();
         mAssistManager = Dependency.get(AssistManager.class);
-        mPm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
     }
 
     @Override
@@ -34,11 +32,14 @@ public class CustomActions extends Action {
     }
 
     public void onTrigger(DetectionProperties detectionProperties) {
-        // Get action to activate based on the squeeze type
-        int mActionSelection = dispatchAction(detectionProperties.isLongSqueeze());
+        final ContentResolver resolver = getContext().getContentResolver();
+
+        int mActionSelection = Settings.Secure.getIntForUser(resolver,
+                Settings.Secure.SQUEEZE_SELECTION, 0, UserHandle.USER_CURRENT);
 
         // Check if the screen is turned on
-        boolean isScreenOn = mPm.isScreenOn();
+        if (pm == null) return;
+        boolean isScreenOn = pm.isScreenOn();
 
         switch (mActionSelection) {
             case 0: // No action
@@ -83,16 +84,6 @@ public class CustomActions extends Action {
                     Utils.toggleQsPanel();
                 }
                 break;
-        }
-    }
-
-    private int dispatchAction(boolean longSqueeze) {
-        if (longSqueeze) {
-            return Settings.Secure.getIntForUser(mResolver,
-                    Settings.Secure.LONG_SQUEEZE_SELECTION, 0, UserHandle.USER_CURRENT);
-        } else {
-            return Settings.Secure.getIntForUser(mResolver,
-                    Settings.Secure.SHORT_SQUEEZE_SELECTION, 0, UserHandle.USER_CURRENT);
         }
     }
 

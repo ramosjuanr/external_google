@@ -51,8 +51,7 @@ public class CHREGestureSensor implements GestureSensor {
                         if (contextHubMessage.getMsgType() == 1) {
                             MessageV1 parseFrom = MessageV1.parseFrom(contextHubMessage.getData());
                             if (parseFrom.hasGestureDetected()) {
-                                mController.onGestureDetected(new DetectionProperties(
-                                        parseFrom.getGestureDetected().hapticConsumed, parseFrom.getGestureDetected().hostSuspended, /* longSqueeze */ false));
+                                mController.onGestureDetected(new DetectionProperties(parseFrom.getGestureDetected().hapticConsumed, parseFrom.getGestureDetected().hostSuspended));
                                 return;
                             } else if (parseFrom.hasGestureProgress()) {
                                 mController.onGestureProgress(parseFrom.getGestureProgress());
