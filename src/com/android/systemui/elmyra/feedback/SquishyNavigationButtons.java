@@ -2,7 +2,6 @@ package com.google.android.systemui.elmyra.feedback;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.os.PowerManager;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.view.View;
